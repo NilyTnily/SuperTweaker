@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit"                        Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio"    Version="2.8.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk"       Version="17.11.1" />
+    <PackageReference Include="FluentAssertions"             Version="6.12.1" />
+    <PackageReference Include="System.Text.Json"             Version="8.0.5" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="8.0.1" />
+  </ItemGroup>
+
+  <!-- Share source files from the main project without WPF dependency -->
+  <ItemGroup>
+    <Compile Include="..\SuperTweaker\Core\Logger.cs"                    Link="Core\Logger.cs"/>
+    <Compile Include="..\SuperTweaker\Core\RegistryHelper.cs"            Link="Core\RegistryHelper.cs"/>
+    <Compile Include="..\SuperTweaker\Core\WindowsInfo.cs"               Link="Core\WindowsInfo.cs"/>
+    <Compile Include="..\SuperTweaker\Core\PowerShellRunner.cs"          Link="Core\PowerShellRunner.cs"/>
+    <Compile Include="..\SuperTweaker\Core\ServiceManager.cs"            Link="Core\ServiceManager.cs"/>
+    <Compile Include="..\SuperTweaker\Modules\GoldenSetup\TweakManifest.cs" Link="Modules\TweakManifest.cs"/>
+    <Compile Include="..\SuperTweaker\Modules\GoldenSetup\TweakApplier.cs"  Link="Modules\TweakApplier.cs"/>
+    <Compile Include="..\SuperTweaker\Modules\GoldenSetup\HellzergTemplateBuilder.cs" Link="Modules\HellzergTemplateBuilder.cs"/>
+    <Compile Include="..\SuperTweaker\Modules\Spoofer\MacSpoofer.cs"     Link="Modules\MacSpoofer.cs"/>
+    <Compile Include="..\SuperTweaker\Modules\Spoofer\HwidSpoofer.cs"    Link="Modules\HwidSpoofer.cs"/>
+    <Compile Include="..\SuperTweaker\Modules\UpdateControl\UpdateManager.cs" Link="Modules\UpdateManager.cs"/>
+  </ItemGroup>
+
+  <!-- Copy profiles for profile and dry-run tests -->
+  <ItemGroup>
+    <Content Include="..\SuperTweaker\Data\profiles\golden-win10.json"
+             Link="Data\profiles\golden-win10.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SuperTweaker\Data\profiles\golden-win11.json"
+             Link="Data\profiles\golden-win11.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SuperTweaker\Data\optimizer\hellzerg-base-win10.json"
+             Link="Data\optimizer\hellzerg-base-win10.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SuperTweaker\Data\optimizer\hellzerg-base-win11.json"
+             Link="Data\optimizer\hellzerg-base-win11.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Management" Version="8.0.0" />
+  </ItemGroup>
+</Project>

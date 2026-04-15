@@ -1,0 +1,57 @@
+# ===== Build outputs =====
+[Bb]in/
+[Oo]bj/
+publish/
+TestResults/
+*.user
+*.suo
+.vs/
+.idea/
+
+# ===== NuGet =====
+*.nupkg
+*.snupkg
+**/packages/
+!**/packages/build/
+nuget.config
+
+# ===== .NET =====
+project.lock.json
+project.fragment.lock.json
+artifacts/
+*.cake
+.dotnet/
+
+# ===== Logs =====
+*.log
+logs/
+# SuperTweaker session logs (AppData)
+# (not in repo — generated at runtime)
+
+# ===== OS =====
+Thumbs.db
+.DS_Store
+*.lnk
+desktop.ini
+
+# ===== Secrets & Certs =====
+*.pfx
+*.p12
+*.cer
+*.key
+*.pem
+secrets.json
+appsettings.Local.json
+
+# ===== IDE =====
+*.pidb
+*.userprefs
+*.VC.opendb
+*.VC.db
+.vscode/
+*.code-workspace
+
+# ===== Test artefacts =====
+*.trx
+*.coverage
+CoverageReport/

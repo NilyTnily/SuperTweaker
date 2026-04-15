@@ -1,0 +1,9 @@
+# Root repo (workspace) — build & release outputs
+artifacts/
+*.msi
+*.wixpdb
+*.wixobj
+
+# If git root is this folder, ignore VS/dotnet noise at top level
+.vs/
+.idea/

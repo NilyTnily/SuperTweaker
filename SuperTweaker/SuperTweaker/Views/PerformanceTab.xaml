@@ -1,0 +1,178 @@
+<UserControl x:Class="SuperTweaker.Views.PerformanceTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel>
+
+      <!-- Title -->
+      <TextBlock Text="Performance — Golden Setup" FontSize="22" FontWeight="Bold"
+                 Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4"/>
+      <TextBlock Text="One-click optimization profile. A restore point is created automatically before any change is made."
+                 FontSize="13" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,24"
+                 TextWrapping="Wrap"/>
+      <Border Margin="0,0,0,12" CornerRadius="8" Background="#1A1870" Padding="8,3" HorizontalAlignment="Left">
+        <TextBlock x:Name="OsScopeText" Text="OS scope: detecting..." FontSize="11"
+                   Foreground="{StaticResource AccentBrush}" FontWeight="SemiBold"/>
+      </Border>
+
+      <!-- Step 1: Backup Card -->
+      <Border Style="{StaticResource CardStyle}" Margin="0,0,0,16">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel Grid.Column="0">
+            <TextBlock Text="Step 1 — Safety Net" Style="{StaticResource SectionHeader}"/>
+            <TextBlock TextWrapping="Wrap" FontSize="12"
+                       Foreground="{StaticResource TextSecondaryBrush}">
+              A <Run FontWeight="SemiBold" Foreground="{StaticResource AccentBrush}">System Restore Point</Run>
+              is created automatically when you click Apply.<LineBreak/>
+              Before apply starts, SuperTweaker now asks you to create a full system image first.
+              This is the safest way to roll back fully in the future.
+            </TextBlock>
+            <TextBlock x:Name="LastRestoreText"
+                       Text="No SuperTweaker restore point found yet."
+                       FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="0,8,0,0"/>
+          </StackPanel>
+          <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="16,0,0,0" MinWidth="190">
+            <Button Content="📀  Create System Image Backup"
+                    Style="{StaticResource GhostButton}" Margin="0,0,0,8"
+                    Click="OpenImageBackup_Click"/>
+            <Button Content="↩  Open Restore Wizard"
+                    Style="{StaticResource GhostButton}"
+                    Click="OpenRestoreWizard_Click"/>
+          </StackPanel>
+        </Grid>
+      </Border>
+
+      <!-- Dynamic tweak selection -->
+      <Border Style="{StaticResource CardStyle}" Margin="0,0,0,16">
+        <StackPanel>
+          <Grid Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="TweakListHeaderText" Text="Golden Setup Tweaks (OS-filtered)" Style="{StaticResource SectionHeader}" Margin="0"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+              <Button Content="✓ Select All" Style="{StaticResource GhostButton}" Padding="10,4" Margin="0,0,8,0"
+                      Click="SelectAllTweaks_Click"/>
+              <Button Content="✗ Deselect All" Style="{StaticResource GhostButton}" Padding="10,4"
+                      Click="DeselectAllTweaks_Click"/>
+            </StackPanel>
+          </Grid>
+          <TextBlock x:Name="TweakListInfoText" FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,10"
+                     Text="Choose exactly which tweaks to include."/>
+
+          <CheckBox x:Name="RunDebloatAfterApplyCheck" IsChecked="True" Margin="0,0,0,8"
+                    Style="{StaticResource ModernCheckBox}"
+                    Foreground="{StaticResource TextSecondaryBrush}">
+            <TextBlock TextWrapping="Wrap" FontSize="12">
+              After tweaks, run <Run FontWeight="SemiBold">Sophia Script</Run> in <Run FontWeight="SemiBold">performance mode</Run>
+              (telemetry minimal, high performance power plan). Does <Run FontWeight="SemiBold">not</Run> trigger a full system restart — that happens only after Hellzerg below.
+            </TextBlock>
+          </CheckBox>
+
+          <CheckBox x:Name="RunHellzergAfterApplyCheck" IsChecked="True" Margin="0,0,0,12"
+                    Style="{StaticResource ModernCheckBox}"
+                    Foreground="{StaticResource TextSecondaryBrush}">
+            <TextBlock TextWrapping="Wrap" FontSize="12">
+              Then run <Run FontWeight="SemiBold">Hellzerg Optimizer</Run> (HPET, performance/network tweaks, registry-friendly options via template).
+              The generated profile sets <Run FontWeight="SemiBold">restart after Optimizer</Run> so the PC reboots once for hardware-side changes — not after Sophia.
+            </TextBlock>
+          </CheckBox>
+
+          <Grid Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="12"/>
+              <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="#121216" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="10">
+              <StackPanel>
+                <TextBlock Text="Core &amp; Safe" Style="{StaticResource LabelText}" Margin="0,0,0,8"/>
+                <StackPanel x:Name="TweakSelectionLeftPanel"/>
+              </StackPanel>
+            </Border>
+
+            <Border Grid.Column="2" Background="#121216" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="10">
+              <StackPanel>
+                <TextBlock Text="Advanced &amp; Extra" Style="{StaticResource LabelText}" Margin="0,0,0,8"/>
+                <StackPanel x:Name="TweakSelectionRightPanel"/>
+              </StackPanel>
+            </Border>
+          </Grid>
+
+          <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="140">
+            <StackPanel x:Name="TweakDetailPanel"/>
+          </ScrollViewer>
+        </StackPanel>
+      </Border>
+
+      <!-- Action buttons -->
+      <Grid Margin="0,0,0,12">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="12"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="12"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Button Grid.Column="0" x:Name="ApplyBtn"
+                Content="⚡  Apply Golden Setup"
+                Style="{StaticResource GreenButton}"
+                Height="52" FontSize="14"
+                Click="ApplyBtn_Click"/>
+
+        <Button Grid.Column="2" x:Name="DryRunBtn"
+                Content="🔍  Dry Run (validate only)"
+                Style="{StaticResource GhostButton}"
+                Height="52" FontSize="13"
+                Click="DryRunBtn_Click"/>
+
+        <Button Grid.Column="4" x:Name="RevertManifestBtn"
+                Content="↩  Revert (Manifest Undo)"
+                Style="{StaticResource OrangeButton}"
+                Height="52" FontSize="14"
+                Click="RevertManifestBtn_Click"/>
+      </Grid>
+
+      <!-- Progress -->
+      <Border x:Name="ProgressPanel" Style="{StaticResource CardStyle}"
+              Margin="0,0,0,12" Visibility="Collapsed">
+        <StackPanel>
+          <Grid Margin="0,0,0,8">
+            <TextBlock x:Name="ProgressLabel" Text="Working..."
+                       Style="{StaticResource LabelText}" Margin="0"/>
+            <Button x:Name="CancelBtn" HorizontalAlignment="Right"
+                    Content="Cancel" Style="{StaticResource GhostButton}"
+                    Padding="10,4" Click="CancelBtn_Click"/>
+          </Grid>
+          <ProgressBar x:Name="ProgressBar" Height="6" Minimum="0" Maximum="100"
+                       Foreground="{StaticResource AccentBrush}"
+                       Background="{StaticResource BgDeepBrush}"
+                       BorderThickness="0"/>
+        </StackPanel>
+      </Border>
+
+      <!-- Log -->
+      <Border Style="{StaticResource CardStyle}">
+        <StackPanel>
+          <Grid Margin="0,0,0,8">
+            <TextBlock Text="Operation Log" Style="{StaticResource SectionHeader}" Margin="0"/>
+            <Button HorizontalAlignment="Right" Content="Clear"
+                    Style="{StaticResource GhostButton}" Padding="10,4"
+                    Click="ClearLog_Click"/>
+          </Grid>
+          <TextBox x:Name="LogBox" Style="{StaticResource LogBox}" Height="200"/>
+        </StackPanel>
+      </Border>
+
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

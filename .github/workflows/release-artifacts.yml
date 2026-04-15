@@ -1,0 +1,47 @@
+# Builds MSI + portable ZIP for manual GitHub Releases upload.
+# Does NOT create or publish a release — run locally or trigger this workflow, then attach artifacts.
+name: Build release artifacts
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version label for filenames (e.g. 1.0.0) — must match installer/SuperTweaker.Package.wxs Package Version'
+        required: true
+        default: '1.0.0'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dotnet tools (WiX)
+        run: dotnet tool restore
+
+      - name: Test
+        run: dotnet test SuperTweaker/SuperTweaker.sln -c Release
+        continue-on-error: false
+
+      - name: Build MSI and portable ZIP
+        shell: pwsh
+        run: |
+          ./scripts/Build-ReleaseArtifacts.ps1 -Version "${{ github.event.inputs.version }}"
+
+      - name: Upload MSI
+        uses: actions/upload-artifact@v4
+        with:
+          name: SuperTweaker-msi
+          path: artifacts/SuperTweaker-${{ github.event.inputs.version }}-x64.msi
+
+      - name: Upload portable ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: SuperTweaker-portable-zip
+          path: artifacts/SuperTweaker-${{ github.event.inputs.version }}-win-x64-portable.zip

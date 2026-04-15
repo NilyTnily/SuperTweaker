@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WiX 5: harvests self-contained publish output. No explicit Feature — WiX wires components automatically.
+  Build: wix build SuperTweaker.Package.wxs -bindpath PublishDir=<abs path to publish\win-x64> -o SuperTweaker-1.0.0-x64.msi
+-->
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package Name="SuperTweaker"
+           Language="1033"
+           Version="1.0.0.0"
+           Manufacturer="SuperTweaker"
+           UpgradeCode="A8E5F2B1-3C4D-5E6F-7081-92A3B4C5D6E7"
+           InstallerVersion="500"
+           Scope="perMachine">
+    <SummaryInformation Description="SuperTweaker — Windows optimization utility" />
+    <MajorUpgrade DowngradeErrorMessage="A newer version of SuperTweaker is already installed." />
+    <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+
+    <StandardDirectory Id="ProgramFiles6432Folder">
+      <Directory Id="INSTALLDIR" Name="SuperTweaker">
+        <Files Include="!(bindpath.PublishDir)\**" />
+      </Directory>
+    </StandardDirectory>
+  </Package>
+</Wix>
