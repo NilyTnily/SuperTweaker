@@ -37,10 +37,15 @@ if (-not $gh) {
     Write-Error "GitHub CLI (gh) not found. Install: winget install --id GitHub.cli"
 }
 
+# Prefer non-interactive auth: classic PAT with `repo` scope in env GITHUB_TOKEN
+if ($env:GITHUB_TOKEN) {
+    Write-Host "Using GITHUB_TOKEN for gh auth (repo scope)..."
+    $env:GITHUB_TOKEN | & $gh auth login --with-token 2>$null
+}
+
 cmd /c "`"$gh`" auth status >nul 2>&1"
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "You are not logged in to GitHub. Run this once, then re-run this script:" -ForegroundColor Yellow
-    Write-Host "  gh auth login" -ForegroundColor Cyan
+    Write-Host "Not logged in. Either set env GITHUB_TOKEN (classic PAT, repo scope) or run: gh auth login" -ForegroundColor Yellow
     exit 1
 }
 
@@ -70,9 +75,22 @@ if (-not (Test-Path $msi) -or -not (Test-Path $zip)) {
 
 Write-Host "Pushing main and tag $Tag..."
 git push -u origin main
-git push origin $Tag 2>$null
 if ($LASTEXITCODE -ne 0) {
-    git push origin $Tag --force
+    if (-not $env:GITHUB_TOKEN) {
+        Write-Error "git push failed. Create the repo on GitHub (empty `SuperTweaker` under your account), confirm `origin`, or set env GITHUB_TOKEN (classic PAT with `repo`) and re-run."
+    }
+    Write-Host "Retrying: create repo if needed, then push with token..."
+    & $gh repo create $repoSlug --public --description "SuperTweaker — Windows optimization utility" 2>$null
+    $authed = "https://x-access-token:$($env:GITHUB_TOKEN)@github.com/${repoSlug}.git"
+    git push -u $authed main
+    if ($LASTEXITCODE -ne 0) { Write-Error "git push with token failed." }
+    git push $authed $Tag
+    git remote set-url origin "https://github.com/${repoSlug}.git"
+} else {
+    git push origin $Tag 2>$null
+    if ($LASTEXITCODE -ne 0) {
+        git push origin $Tag --force
+    }
 }
 
 $notes = "SuperTweaker $Version for Windows 10/11 x64 (Administrator). MSI = installer; ZIP = portable self-contained app."
