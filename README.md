@@ -198,7 +198,17 @@ Outputs appear under `artifacts/`. WiX is pinned in `dotnet-tools.json` (`wix` 5
 
 **GitHub Actions:** **Actions → Build release artifacts → Run workflow** (manual dispatch) produces CI artifacts; you can attach the same files from `artifacts/` after a local `Build-ReleaseArtifacts.ps1` run.
 
-**Publishing a release (maintainers):** Create the GitHub repository **`BendaZ/SuperTweaker`** (empty, no auto-generated README if you are pushing this tree). Push `main` and tag **`v1.0.0`**, then open **Releases → Create a new release** for tag `v1.0.0` and upload **`SuperTweaker-1.0.0-x64.msi`** and **`SuperTweaker-1.0.0-win-x64-portable.zip`** (from `artifacts/` after running the build script). The download links at the top of this README use GitHub’s **`/releases/latest/download/...`** URLs and require those exact filenames on the release.
+**Publishing (automated):** From the repo root on Windows, after a one-time **`gh auth login`** ([GitHub CLI](https://cli.github.com/)):
+
+```powershell
+.\scripts\Publish-To-GitHub.ps1
+```
+
+This pushes `main` and tag **`v1.0.0`**, then creates a **Release** and uploads the **MSI** and **portable ZIP** from `artifacts/` (building them first if missing).
+
+**Remote URL:** `origin` must be your real repo, e.g. `https://github.com/<your-username>/SuperTweaker.git`. If it is not **`BendaZ/SuperTweaker`**, update **`git remote set-url origin ...`** and replace every `github.com/BendaZ/SuperTweaker` link in this README so downloads match your account.
+
+**Manual release:** Push `main` and tag `v1.0.0`, then attach **`SuperTweaker-1.0.0-x64.msi`** and **`SuperTweaker-1.0.0-win-x64-portable.zip`** (exact names) so the **`/releases/latest/download/...`** links work.
 
 ---
 
