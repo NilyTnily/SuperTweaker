@@ -11,11 +11,34 @@
 
 *Modern WPF shell · JSON-driven profiles · Administrator-required operations*
 
-[![MSI installer](https://img.shields.io/badge/Download-MSI%20installer-0078D4?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/BendaZ/SuperTweaker/releases/latest/download/SuperTweaker-1.0.0-x64.msi)
-[![Portable ZIP](https://img.shields.io/badge/Download-Portable%20ZIP-238636?style=for-the-badge&logo=zip&logoColor=white)](https://github.com/BendaZ/SuperTweaker/releases/latest/download/SuperTweaker-1.0.0-win-x64-portable.zip)
-[![Releases](https://img.shields.io/github/v/release/BendaZ/SuperTweaker?label=Releases&logo=github)](https://github.com/BendaZ/SuperTweaker/releases)
+<pre>
++--------------------------------------------------------------+
+|  Windows 10 and 11 are detected at launch — same installers, |
+|  correct Golden Setup profile and OS-scoped tweaks.          |
++--------------------------------------------------------------+
+</pre>
 
-**Direct links (latest v1.0.0):** [SuperTweaker-1.0.0-x64.msi](https://github.com/BendaZ/SuperTweaker/releases/latest/download/SuperTweaker-1.0.0-x64.msi) · [SuperTweaker-1.0.0-win-x64-portable.zip](https://github.com/BendaZ/SuperTweaker/releases/latest/download/SuperTweaker-1.0.0-win-x64-portable.zip) (self-contained single-file app + `Data/` / `Assets/`)
+<table>
+  <thead>
+    <tr>
+      <th align="left">Package</th>
+      <th align="left">What you get</th>
+      <th align="center">Get it</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>.msi</code> installer</td>
+      <td>Classic setup · installs under Program Files</td>
+      <td align="center"><a href="https://github.com/BendaZ/SuperTweaker/releases/latest/download/SuperTweaker-1.0.0-x64.msi"><strong>Download</strong></a></td>
+    </tr>
+    <tr>
+      <td><code>.zip</code> portable EXE</td>
+      <td>Extract anywhere · self-contained <code>SuperTweaker.exe</code> + <code>Data</code> / <code>Assets</code></td>
+      <td align="center"><a href="https://github.com/BendaZ/SuperTweaker/releases/latest/download/SuperTweaker-1.0.0-win-x64-portable.zip"><strong>Download</strong></a></td>
+    </tr>
+  </tbody>
+</table>
 
 </div>
 
@@ -138,7 +161,7 @@ SuperTweaker/
 | Requirement | Notes |
 |-------------|--------|
 | **OS** | Windows 10 or Windows 11 (x64) |
-| **Runtime / SDK** | [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) (for build); Windows Desktop runtime for running published output |
+| **Runtime / SDK** | [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) (for build); Windows Desktop runtime to run the built app |
 | **Elevation** | Application manifest: `requireAdministrator` |
 | **Optional** | **winget** (App Installer) for Apps tab, Sophia (`TeamSophia.SophiaScript`), and Hellzerg (`Hellzerg.Optimizer`) post-apply steps |
 
@@ -172,43 +195,6 @@ dotnet test SuperTweaker/SuperTweaker.sln
 ```
 
 The test suite includes dry-run integration checks, Golden Setup read-only validation, and `UpdateManager` state inspection **without** applying destructive changes.
-
----
-
-## Release artifacts (MSI & portable)
-
-Prebuilt **MSI** and **portable ZIP** for the current version are linked in the **download badges** at the top of this README and on [**GitHub Releases**](https://github.com/BendaZ/SuperTweaker/releases). Binaries are **not** stored in the repository (`artifacts/` is gitignored).
-
-| Download | Description |
-|----------|-------------|
-| [**MSI**](https://github.com/BendaZ/SuperTweaker/releases/latest/download/SuperTweaker-1.0.0-x64.msi) | WiX **per-machine** installer → `%ProgramFiles%\SuperTweaker`. |
-| [**Portable ZIP**](https://github.com/BendaZ/SuperTweaker/releases/latest/download/SuperTweaker-1.0.0-win-x64-portable.zip) | Extract anywhere; **self-contained** **single-file** `SuperTweaker.exe` with `Data/` and `Assets/` beside it (no separate .NET runtime). |
-
-**Local build (Windows, PowerShell):**
-
-```powershell
-cd <repo-root>
-dotnet tool restore
-./scripts/Build-ReleaseArtifacts.ps1 -Version 1.0.0
-```
-
-Outputs appear under `artifacts/`. WiX is pinned in `dotnet-tools.json` (`wix` 5.0.2).
-
-**Version bump:** Keep in sync: `SuperTweaker/SuperTweaker/SuperTweaker.csproj` (`<Version>`), `installer/SuperTweaker.Package.wxs` (`Package` **Version** must be `x.x.x.x`), and the `-Version` argument to the script.
-
-**GitHub Actions:** **Actions → Build release artifacts → Run workflow** (manual dispatch) produces CI artifacts; you can attach the same files from `artifacts/` after a local `Build-ReleaseArtifacts.ps1` run.
-
-**Publishing (automated):** From the repo root on Windows, after a one-time **`gh auth login`** ([GitHub CLI](https://cli.github.com/)):
-
-```powershell
-.\scripts\Publish-To-GitHub.ps1
-```
-
-This pushes `main` and tag **`v1.0.0`**, then creates a **Release** and uploads the **MSI** and **portable ZIP** from `artifacts/` (building them first if missing).
-
-**Remote URL:** `origin` must be your real repo, e.g. `https://github.com/<your-username>/SuperTweaker.git`. If it is not **`BendaZ/SuperTweaker`**, update **`git remote set-url origin ...`** and replace every `github.com/BendaZ/SuperTweaker` link in this README so downloads match your account.
-
-**Manual release:** Push `main` and tag `v1.0.0`, then attach **`SuperTweaker-1.0.0-x64.msi`** and **`SuperTweaker-1.0.0-win-x64-portable.zip`** (exact names) so the **`/releases/latest/download/...`** links work.
 
 ---
 
