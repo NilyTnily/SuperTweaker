@@ -1,0 +1,224 @@
+{
+  "Name": "Golden Setup — Windows 11",
+  "OsTarget": "Win11",
+  "Tweaks": [
+
+    {
+      "Id": "disable-telemetry-service",
+      "Name": "Disable Telemetry (DiagTrack)",
+      "Description": "Kills the Connected User Experiences and Telemetry service.",
+      "Risk": "Safe",
+      "Os": "Both",
+      "Services": [
+        { "ServiceName": "DiagTrack",       "ApplyStartMode": "disabled", "UndoStartMode": "auto" },
+        { "ServiceName": "dmwappushservice","ApplyStartMode": "disabled", "UndoStartMode": "demand" }
+      ],
+      "Registry": [
+        { "Path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection", "Name": "AllowTelemetry",   "Value": 0, "ValueKind": "DWORD", "UndoValue": null },
+        { "Path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection", "Name": "DisableTelemetryOptInChange", "Value": 1, "ValueKind": "DWORD", "UndoValue": null }
+      ]
+    },
+
+    {
+      "Id": "disable-search-bing",
+      "Name": "Disable Bing Search / Web Results",
+      "Description": "Removes web results from Windows Search.",
+      "Risk": "Safe",
+      "Os": "Both",
+      "Registry": [
+        { "Path": "HKEY_CURRENT_USER\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer",  "Name": "DisableSearchBoxSuggestions", "Value": 1, "ValueKind": "DWORD", "UndoValue": null },
+        { "Path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search", "Name": "DisableWebSearch", "Value": 1, "ValueKind": "DWORD", "UndoValue": null },
+        { "Path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search", "Name": "ConnectedSearchUseWeb", "Value": 0, "ValueKind": "DWORD", "UndoValue": null }
+      ]
+    },
+
+    {
+      "Id": "disable-xbox-gamebar",
+      "Name": "Disable Xbox Game Bar & DVR",
+      "Description": "Removes Xbox Game Bar, game DVR, and background recording.",
+      "Risk": "Safe",
+      "Os": "Both",
+      "Registry": [
+        { "Path": "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\GameDVR",  "Name": "AppCaptureEnabled",    "Value": 0, "ValueKind": "DWORD", "UndoValue": 1 },
+        { "Path": "HKEY_CURRENT_USER\\System\\GameConfigStore",                                 "Name": "GameDVR_Enabled",      "Value": 0, "ValueKind": "DWORD", "UndoValue": 1 },
+        { "Path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\GameDVR",        "Name": "AllowGameDVR",         "Value": 0, "ValueKind": "DWORD", "UndoValue": null }
+      ]
+    },
+
+    {
+      "Id": "disable-background-apps",
+      "Name": "Disable Background UWP Apps",
+      "Description": "Prevents UWP apps from running in background globally.",
+      "Risk": "Safe",
+      "Os": "Both",
+      "Registry": [
+        { "Path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\AppPrivacy", "Name": "LetAppsRunInBackground", "Value": 2, "ValueKind": "DWORD", "UndoValue": null }
+      ]
+    },
+
+    {
+      "Id": "disable-sysmain",
+      "Name": "Disable SysMain (Superfetch)",
+      "Description": "Frees RAM preloading — beneficial on SSDs.",
+      "Risk": "Safe",
+      "Os": "Both",
+      "Services": [
+        { "ServiceName": "SysMain", "ApplyStartMode": "disabled", "UndoStartMode": "auto" }
+      ]
+    },
+
+    {
+      "Id": "disable-search-indexer",
+      "Name": "Disable Windows Search Indexer",
+      "Description": "Stops background disk indexing. Search still works, just slower first time.",
+      "Risk": "Moderate",
+      "Os": "Both",
+      "Services": [
+        { "ServiceName": "WSearch", "ApplyStartMode": "disabled", "UndoStartMode": "auto" }
+      ]
+    },
+
+    {
+      "Id": "disable-print-spooler",
+      "Name": "Disable Print Spooler",
+      "Description": "Disable if you have no printer. Eliminates a common attack surface.",
+      "Risk": "Moderate",
+      "Os": "Both",
+      "Services": [
+        { "ServiceName": "Spooler", "ApplyStartMode": "disabled", "UndoStartMode": "auto" }
+      ]
+    },
+
+    {
+      "Id": "high-perf-power-plan",
+      "Name": "Set High Performance Power Plan",
+      "Description": "Activates the built-in High Performance plan.",
+      "Risk": "Safe",
+      "Os": "Both",
+      "PowerShellApply": "powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c",
+      "PowerShellUndo":  "powercfg /setactive 381b4222-f694-41f0-9685-ff5bb260df2e"
+    },
+
+    {
+      "Id": "disable-hibernation",
+      "Name": "Disable Hibernation (reclaim hiberfil.sys)",
+      "Description": "Frees disk space equal to your RAM. Removes hibernation option from power menu.",
+      "Risk": "Moderate",
+      "Os": "Both",
+      "PowerShellApply": "powercfg /h off",
+      "PowerShellUndo":  "powercfg /h on"
+    },
+
+    {
+      "Id": "disable-cortana",
+      "Name": "Disable Cortana",
+      "Description": "Kills Cortana process and prevents it launching on startup.",
+      "Risk": "Safe",
+      "Os": "Both",
+      "Registry": [
+        { "Path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search", "Name": "AllowCortana", "Value": 0, "ValueKind": "DWORD", "UndoValue": null }
+      ],
+      "Tasks": [
+        { "TaskPath": "\\Microsoft\\Windows\\Cortana\\QueueUserSessionDataForCortana", "Disable": true }
+      ]
+    },
+
+    {
+      "Id": "disable-copilot-win11",
+      "Name": "Disable Copilot / AI Recall (Win11)",
+      "Description": "Removes Copilot sidebar and prevents Recall from indexing screen content.",
+      "Risk": "Safe",
+      "Os": "Win11Only",
+      "Registry": [
+        { "Path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsCopilot",   "Name": "TurnOffWindowsCopilot", "Value": 1, "ValueKind": "DWORD", "UndoValue": null },
+        { "Path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI",        "Name": "DisableAIDataAnalysis", "Value": 1, "ValueKind": "DWORD", "UndoValue": null },
+        { "Path": "HKEY_CURRENT_USER\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsCopilot",    "Name": "TurnOffWindowsCopilot", "Value": 1, "ValueKind": "DWORD", "UndoValue": null }
+      ]
+    },
+
+    {
+      "Id": "disable-widgets-win11",
+      "Name": "Disable Widgets (Win11)",
+      "Description": "Removes the Widgets button from the taskbar and stops the feed service.",
+      "Risk": "Safe",
+      "Os": "Win11Only",
+      "Registry": [
+        { "Path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Dsh", "Name": "AllowNewsAndInterests", "Value": 0, "ValueKind": "DWORD", "UndoValue": null },
+        { "Path": "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "TaskbarDa", "Value": 0, "ValueKind": "DWORD", "UndoValue": 1 }
+      ]
+    },
+
+    {
+      "Id": "disable-vbs-info",
+      "Name": "VBS / Memory Integrity — Info Tweak",
+      "Description": "Sets registry flag. Full VBS disable may require a reboot + BIOS change. This prepares the registry value.",
+      "Risk": "Advanced",
+      "Os": "Win11Only",
+      "Registry": [
+        { "Path": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard", "Name": "EnableVirtualizationBasedSecurity", "Value": 0, "ValueKind": "DWORD", "UndoValue": 1 }
+      ]
+    },
+
+    {
+      "Id": "disable-feedback-notifications",
+      "Name": "Disable Feedback / Notification spam",
+      "Description": "Removes Microsoft feedback requests and notification suggestions.",
+      "Risk": "Safe",
+      "Os": "Both",
+      "Registry": [
+        { "Path": "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Siuf\\Rules", "Name": "NumberOfSIUFInPeriod", "Value": 0, "ValueKind": "DWORD", "UndoValue": null },
+        { "Path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection", "Name": "DoNotShowFeedbackNotifications", "Value": 1, "ValueKind": "DWORD", "UndoValue": null }
+      ]
+    },
+
+    {
+      "Id": "disable-maintenance-tasks",
+      "Name": "Disable Scheduled Maintenance Tasks",
+      "Description": "Stops Windows from running maintenance during 'idle' time that causes CPU spikes.",
+      "Risk": "Moderate",
+      "Os": "Both",
+      "Tasks": [
+        { "TaskPath": "\\Microsoft\\Windows\\TaskScheduler\\Regular Maintenance",     "Disable": true },
+        { "TaskPath": "\\Microsoft\\Windows\\TaskScheduler\\Maintenance Configurator","Disable": true },
+        { "TaskPath": "\\Microsoft\\Windows\\Defrag\\ScheduledDefrag",               "Disable": true },
+        { "TaskPath": "\\Microsoft\\Windows\\DiskDiagnostic\\Microsoft-Windows-DiskDiagnosticDataCollector", "Disable": true }
+      ]
+    },
+
+    {
+      "Id": "network-adapter-latency",
+      "Name": "Network: Disable Interrupt Moderation",
+      "Description": "Reduces network latency by disabling interrupt coalescing.",
+      "Risk": "Moderate",
+      "Os": "Both",
+      "PowerShellApply": "Get-NetAdapter -Physical | ForEach-Object { Set-NetAdapterAdvancedProperty -Name $_.Name -RegistryKeyword '*InterruptModeration' -RegistryValue 0 -ErrorAction SilentlyContinue }",
+      "PowerShellUndo":  "Get-NetAdapter -Physical | ForEach-Object { Set-NetAdapterAdvancedProperty -Name $_.Name -RegistryKeyword '*InterruptModeration' -RegistryValue 1 -ErrorAction SilentlyContinue }"
+    },
+
+    {
+      "Id": "ctt-win11-privacy-tweaks",
+      "Name": "ChrisTitus-style Win11 Privacy Tweaks",
+      "Description": "Applies community-preferred Win11 privacy/policy toggles (reversible).",
+      "Risk": "Moderate",
+      "Os": "Win11Only",
+      "Registry": [
+        { "Path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\AdvertisingInfo", "Name": "DisabledByGroupPolicy", "Value": 1, "ValueKind": "DWORD", "UndoValue": 0 },
+        { "Path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\System", "Name": "EnableActivityFeed", "Value": 0, "ValueKind": "DWORD", "UndoValue": 1 },
+        { "Path": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\System", "Name": "PublishUserActivities", "Value": 0, "ValueKind": "DWORD", "UndoValue": 1 }
+      ]
+    },
+
+    {
+      "Id": "win11-start-cleanup",
+      "Name": "Win11 Start/Content Cleanup",
+      "Description": "Disables start recommendations and suggested content surfaces on Win11.",
+      "Risk": "Safe",
+      "Os": "Win11Only",
+      "Registry": [
+        { "Path": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "Start_IrisRecommendations", "Value": 0, "ValueKind": "DWORD", "UndoValue": 1 },
+        { "Path": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "Start_TrackProgs", "Value": 0, "ValueKind": "DWORD", "UndoValue": 1 }
+      ]
+    }
+
+  ]
+}

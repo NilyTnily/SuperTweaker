@@ -1,0 +1,59 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>SuperTweaker</AssemblyName>
+    <RootNamespace>SuperTweaker</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Platforms>x64</Platforms>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <Version>1.0.0</Version>
+    <Company>SuperTweaker</Company>
+    <Product>SuperTweaker</Product>
+    <Description>All-in-one Windows optimization utility</Description>
+    <ApplicationIcon>Assets\Icons\supertweaker-golden-icon.ico</ApplicationIcon>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- WMI for system info, NIC, restore points -->
+    <PackageReference Include="SkiaSharp" Version="3.119.2" />
+    <PackageReference Include="Svg.Skia" Version="4.3.0" />
+    <PackageReference Include="System.Management" Version="8.0.0" />
+    <!-- ServiceController / ServiceStartMode -->
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="8.0.1" />
+    <!-- JSON profiles & catalog -->
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Golden profiles copied to output so they're editable without recompile -->
+    <None Update="Data\profiles\golden-win10.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\profiles\golden-win11.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\apps\apps-catalog.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\optimizer\hellzerg-base-win10.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\optimizer\hellzerg-base-win11.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Icons\default-app-icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Icons\supertweaker-golden-icon.png" />
+  </ItemGroup>
+</Project>

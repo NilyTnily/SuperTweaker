@@ -1,0 +1,126 @@
+<UserControl x:Class="SuperTweaker.Views.UpdatesTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+
+  <StackPanel>
+
+    <!-- Title -->
+    <TextBlock Text="Windows Update Control" FontSize="22" FontWeight="Bold"
+               Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4"/>
+    <TextBlock Text="Disable or re-enable Windows Update via services, scheduled tasks, and registry policy."
+               FontSize="13" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,24"
+               TextWrapping="Wrap"/>
+    <Border Margin="0,0,0,12" CornerRadius="8" Background="#1A1870" Padding="8,3" HorizontalAlignment="Left">
+      <TextBlock x:Name="OsScopeText" Text="OS scope: detecting..." FontSize="11"
+                 Foreground="{StaticResource AccentBrush}" FontWeight="SemiBold"/>
+    </Border>
+
+    <!-- Warning Banner -->
+    <Border Margin="0,0,0,16" CornerRadius="8" Padding="16,12"
+            Background="#2A1E0A" BorderBrush="{StaticResource AccentOrangeBrush}"
+            BorderThickness="1">
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Text="⚠" FontSize="18" Margin="0,0,10,0" VerticalAlignment="Center"
+                   Foreground="{StaticResource AccentOrangeBrush}"/>
+        <TextBlock TextWrapping="Wrap" FontSize="12"
+                   Foreground="{StaticResource AccentOrangeBrush}">
+          Disabling updates removes security patches. Only use for controlled environments,
+          testing, or when you need a stable frozen system. Re-enable before connecting to untrusted networks.
+        </TextBlock>
+      </StackPanel>
+    </Border>
+
+    <!-- Status Card -->
+    <Border Style="{StaticResource CardStyle}" Margin="0,0,0,16">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+          <TextBlock Text="Current Status" Style="{StaticResource SectionHeader}"/>
+          <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+            <TextBlock Text="Update Services: " Style="{StaticResource LabelText}"/>
+            <Border x:Name="ServiceStatusBadge" CornerRadius="10" Padding="8,3" Margin="6,0,0,0">
+              <TextBlock x:Name="ServiceStatusText" Text="Checking..." FontSize="11" FontWeight="SemiBold"/>
+            </Border>
+          </StackPanel>
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Group Policy Block: " Style="{StaticResource LabelText}"/>
+            <Border x:Name="PolicyStatusBadge" CornerRadius="10" Padding="8,3" Margin="6,0,0,0">
+              <TextBlock x:Name="PolicyStatusText" Text="Checking..." FontSize="11" FontWeight="SemiBold"/>
+            </Border>
+          </StackPanel>
+        </StackPanel>
+        <Button Grid.Column="1" Content="↻  Refresh Status"
+                Style="{StaticResource GhostButton}" VerticalAlignment="Center"
+                Click="RefreshStatus_Click"/>
+      </Grid>
+    </Border>
+
+    <!-- Action Buttons -->
+    <Grid Margin="0,0,0,16">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="16"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+      <Button Grid.Column="0" x:Name="DisableBtn"
+              Content="🛑  Disable Windows Update"
+              Style="{StaticResource RedButton}"
+              Height="52" FontSize="14"
+              Click="DisableBtn_Click"/>
+
+      <Button Grid.Column="2" x:Name="EnableBtn"
+              Content="✅  Enable Windows Update"
+              Style="{StaticResource GreenButton}"
+              Height="52" FontSize="14"
+              Click="EnableBtn_Click"/>
+    </Grid>
+
+    <!-- What this touches -->
+    <Border Style="{StaticResource CardStyle}" Margin="0,0,0,16">
+      <StackPanel>
+        <TextBlock Text="What gets changed" Style="{StaticResource SectionHeader}"/>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel Grid.Column="0">
+            <TextBlock Text="Services" Style="{StaticResource LabelText}" Margin="0,0,0,6"/>
+            <TextBlock FontSize="11" Foreground="{StaticResource TextSecondaryBrush}"
+                       LineHeight="22">
+              <Run>• wuauserv (Windows Update)</Run><LineBreak/>
+              <Run>• UsoSvc (Update Orchestrator)</Run><LineBreak/>
+              <Run>• WaaSMedicSvc (self-healer)</Run><LineBreak/>
+              <Run>• BITS</Run><LineBreak/>
+              <Run>• dosvc (Delivery Optimization)</Run>
+            </TextBlock>
+          </StackPanel>
+          <StackPanel Grid.Column="1">
+            <TextBlock Text="Tasks &amp; Policy" Style="{StaticResource LabelText}" Margin="0,0,0,6"/>
+            <TextBlock FontSize="11" Foreground="{StaticResource TextSecondaryBrush}"
+                       LineHeight="22">
+              <Run>• WindowsUpdate scheduled tasks (5)</Run><LineBreak/>
+              <Run>• AU policy: NoAutoUpdate</Run><LineBreak/>
+              <Run>• AU policy: DisableWindowsUpdateAccess</Run><LineBreak/>
+              <Run>• WaaSMedicSvc registry lock</Run>
+            </TextBlock>
+          </StackPanel>
+        </Grid>
+      </StackPanel>
+    </Border>
+
+    <!-- Log -->
+    <Border Style="{StaticResource CardStyle}">
+      <StackPanel>
+        <TextBlock Text="Log" Style="{StaticResource SectionHeader}"/>
+        <TextBox x:Name="LogBox" Style="{StaticResource LogBox}" Height="130"/>
+      </StackPanel>
+    </Border>
+
+  </StackPanel>
+</UserControl>

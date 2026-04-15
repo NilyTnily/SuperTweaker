@@ -1,0 +1,95 @@
+<UserControl x:Class="SuperTweaker.Views.AppsTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="150"/>
+    </Grid.RowDefinitions>
+
+    <!-- Title -->
+    <StackPanel Grid.Row="0" Margin="0,0,0,16">
+      <TextBlock Text="Apps &amp; Software" FontSize="22" FontWeight="Bold"
+                 Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4"/>
+      <TextBlock Text="Full software catalog with real app icons. Select packages and install with winget."
+                 FontSize="13" Foreground="{StaticResource TextSecondaryBrush}"/>
+      <Border Margin="0,10,0,0" CornerRadius="8" Background="#1A1870" Padding="8,3" HorizontalAlignment="Left">
+        <TextBlock x:Name="OsScopeText" Text="OS scope: detecting..." FontSize="11"
+                   Foreground="{StaticResource AccentBrush}" FontWeight="SemiBold"/>
+      </Border>
+    </StackPanel>
+
+    <!-- Toolbar -->
+    <Border Grid.Row="1" Style="{StaticResource CardStyle}" Margin="0,0,0,12">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Orientation="Horizontal">
+          <Button Content="✓  Select All"   Style="{StaticResource GhostButton}" Margin="0,0,8,0"
+                  Click="SelectAll_Click"/>
+          <Button Content="✗  Deselect All" Style="{StaticResource GhostButton}" Margin="0,0,8,0"
+                  Click="DeselectAll_Click"/>
+          <Button Content="⬆  Upgrade All Installed" Style="{StaticResource GhostButton}"
+                  Click="UpgradeAll_Click"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Orientation="Horizontal">
+          <Border x:Name="WingetStatusBadge" CornerRadius="10" Padding="8,3" Margin="0,0,12,0">
+            <TextBlock x:Name="WingetStatusText" Text="winget: checking..." FontSize="11"/>
+          </Border>
+          <Button x:Name="InstallBtn" Content="📦  Install Selected"
+                  Style="{StaticResource GreenButton}"
+                  Click="InstallBtn_Click"/>
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <!-- Guided flow -->
+    <Border Grid.Row="2" Style="{StaticResource CardStyle}" Margin="0,0,0,12">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel>
+          <TextBlock Text="Batch Installer Flow" Style="{StaticResource SectionHeader}" Margin="0,0,0,6"/>
+          <TextBlock Text="1) Select software tiles  •  2) Review selected count  •  3) Click Install Selected once to run full batch"
+                     FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" TextWrapping="Wrap"/>
+        </StackPanel>
+        <Border Grid.Column="1" Background="#1A3A2A" BorderBrush="{StaticResource AccentGreenBrush}" BorderThickness="1"
+                CornerRadius="10" Padding="10,5" VerticalAlignment="Center" Margin="12,0,0,0">
+          <TextBlock x:Name="SelectionSummaryText" Text="Selected: 0 apps" FontSize="12"
+                     Foreground="{StaticResource AccentGreenBrush}" FontWeight="SemiBold"/>
+        </Border>
+      </Grid>
+    </Border>
+
+    <!-- App categories list -->
+    <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,4,0">
+      <StackPanel x:Name="CategoryPanel"/>
+    </ScrollViewer>
+
+    <!-- Action bar -->
+    <Grid Grid.Row="4" Margin="0,12,0,8">
+      <ProgressBar x:Name="InstallProgress" Height="4" Minimum="0" Maximum="100"
+                   Foreground="{StaticResource AccentBrush}"
+                   Background="{StaticResource BgDeepBrush}"
+                   BorderThickness="0" Visibility="Collapsed"/>
+    </Grid>
+
+    <!-- Log -->
+    <Border Grid.Row="5" Style="{StaticResource CardStyle}">
+      <StackPanel>
+        <TextBlock Text="Install Log" Style="{StaticResource SectionHeader}"/>
+        <TextBox x:Name="LogBox" Style="{StaticResource LogBox}" Height="90"/>
+      </StackPanel>
+    </Border>
+  </Grid>
+</UserControl>

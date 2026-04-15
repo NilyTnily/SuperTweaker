@@ -1,0 +1,77 @@
+name: CI — Build & Test
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: Build & Test (Windows)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore NuGet packages
+        run: dotnet restore SuperTweaker.sln
+
+      - name: Build (Release)
+        run: dotnet build SuperTweaker.sln -c Release --no-restore /p:Platform=x64
+
+      - name: Run Tests
+        run: >
+          dotnet test SuperTweaker.Tests/SuperTweaker.Tests.csproj
+          --no-build
+          --configuration Release
+          --logger "trx;LogFileName=results.trx"
+          --results-directory TestResults
+          -- xunit.filters "Category!=WriteSafe"
+        continue-on-error: false
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults/*.trx
+
+  publish:
+    name: Publish Self-Contained (x64)
+    runs-on: windows-latest
+    needs: build-and-test
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Publish
+        run: >
+          dotnet publish SuperTweaker/SuperTweaker.csproj
+          -c Release
+          -r win-x64
+          --self-contained true
+          /p:PublishSingleFile=true
+          /p:IncludeNativeLibrariesForSelfExtract=true
+          -o publish/
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SuperTweaker-win-x64
+          path: publish/
+          retention-days: 30
