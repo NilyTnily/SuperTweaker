@@ -196,7 +196,9 @@ Outputs appear under `artifacts/`. WiX is pinned in `dotnet-tools.json` (`wix` 5
 
 **Version bump:** Keep in sync: `SuperTweaker/SuperTweaker/SuperTweaker.csproj` (`<Version>`), `installer/SuperTweaker.Package.wxs` (`Package` **Version** must be `x.x.x.x`), and the `-Version` argument to the script.
 
-**GitHub:** Use **Actions → Build release artifacts → Run workflow** (manual dispatch). Download the uploaded **MSI** and **portable ZIP** artifacts, then attach them when you create a **Release** on GitHub (this repo does not auto-publish releases).
+**GitHub Actions:** **Actions → Build release artifacts → Run workflow** (manual dispatch) produces CI artifacts; you can attach the same files from `artifacts/` after a local `Build-ReleaseArtifacts.ps1` run.
+
+**Publishing a release (maintainers):** Create the GitHub repository **`BendaZ/SuperTweaker`** (empty, no auto-generated README if you are pushing this tree). Push `main` and tag **`v1.0.0`**, then open **Releases → Create a new release** for tag `v1.0.0` and upload **`SuperTweaker-1.0.0-x64.msi`** and **`SuperTweaker-1.0.0-win-x64-portable.zip`** (from `artifacts/` after running the build script). The download links at the top of this README use GitHub’s **`/releases/latest/download/...`** URLs and require those exact filenames on the release.
 
 ---
 
