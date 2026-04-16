@@ -18,45 +18,9 @@
 +--------------------------------------------------------------+
 </pre>
 
-<table>
-  <thead>
-    <tr>
-      <th align="left">Package</th>
-      <th align="left">What you get</th>
-      <th align="center">Get it</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>.msi</code> installer</td>
-      <td>Classic setup · installs under Program Files</td>
-      <td align="center"><a href="https://github.com/NilyTnily/SuperTweaker/releases/latest/download/SuperTweaker-1.0.0-x64.msi"><strong>Download</strong></a></td>
-    </tr>
-    <tr>
-      <td><code>.zip</code> portable EXE</td>
-      <td>Extract anywhere · self-contained <code>SuperTweaker.exe</code> + <code>Data</code> / <code>Assets</code></td>
-      <td align="center"><a href="https://github.com/NilyTnily/SuperTweaker/releases/latest/download/SuperTweaker-1.0.0-win-x64-portable.zip"><strong>Download</strong></a></td>
-    </tr>
-  </tbody>
-</table>
+**Downloads:** Prebuilt **MSI** and **portable** archives are listed on the **Releases** page of this repository (no direct download URLs in this file).
 
 </div>
-
----
-
-## Screenshots
-
-### System Dashboard
-
-<p align="center">
-  <img src="docs/screenshots/dashboard.png" alt="SuperTweaker — System Dashboard with hardware telemetry, security checks, and backup shortcuts" />
-</p>
-
-### Apps & Software
-
-<p align="center">
-  <img src="docs/screenshots/apps-software.png" alt="SuperTweaker — Apps and Software catalog with winget, batch install flow, and install log" />
-</p>
 
 ---
 
@@ -105,7 +69,7 @@ The app is built for **64-bit Windows 10 and Windows 11**, requests **Administra
 ### Apps & Software
 
 - **Software catalog** from `apps-catalog.json`: categories, **winget** package IDs, default selections, and optional **per-app icon URLs**.
-- Icons render via **SkiaSharp** / **Svg.Skia** (PNG, JPG, SVG). Fetched icons are stored under **`%LocalAppData%\SuperTweaker\IconCache`** for faster repeat loads.
+- Icons render via **SkiaSharp** / **Svg.Skia** (PNG, JPG, SVG). Fetched icons are cached locally under your user profile for faster repeat loads.
 - **Batch Installer Flow**: select tiles → review **selection count** → **Install Selected** runs one batch; **Upgrade All Installed** uses winget across the catalog scope.
 - **Install progress** bar and **Install Log** panel; **winget** availability badge in the toolbar.
 
