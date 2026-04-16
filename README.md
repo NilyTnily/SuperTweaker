@@ -10,9 +10,20 @@
 
 <br/>
 
-**[⬇ Releases — MSI & portable](https://github.com/NilyTnily/SuperTweaker/releases)** · *No dev tools required — install the MSI or unzip and run.*
+**[⬇ Releases](https://github.com/NilyTnily/SuperTweaker/releases)** · *MSI installer or portable EXE.*
 
 </div>
+
+---
+
+## Download
+
+| Type | What you get |
+|:---|:---|
+| **MSI** | Installer — full Windows install like any desktop app. |
+| **EXE** | Single portable executable file — run **`SuperTweaker.exe`** with **`Data`** and **`Assets`** beside it (from the portable release). |
+
+Grab the latest from **[Releases](https://github.com/NilyTnily/SuperTweaker/releases)**.
 
 ---
 
@@ -22,11 +33,11 @@ Windows **10** and **11** are **picked up automatically** — the right profiles
 
 ### Contents
 
+- [Download](#download)
 - [See it in action](#see-it-in-action)
 - [What makes it feel *good*](#what-makes-it-feel-good)
 - [Golden Setup](#golden-setup)
 - [Apps & software catalog](#apps--software-catalog)
-- [Download](#download)
 - [Before you tweak](#before-you-tweak)
 - [Contributing](#contributing)
 
@@ -81,6 +92,7 @@ Windows **10** and **11** are **picked up automatically** — the right profiles
 18. Start / content cleanup  
 19. Disable News & Interests (taskbar)  
 20. Sophia-style Consumer Debloat  
+21. Hellzerg Optimizer (optional hardware / latency template)  
 
 ---
 
@@ -365,17 +377,6 @@ Windows **10** and **11** are **picked up automatically** — the right profiles
 
 - VirtualBox  
 - VMware Workstation Player  
-
----
-
-## Download
-
-| | |
-|:---|:---|
-| **MSI** | Full installer — lives like any serious Windows app. |
-| **Portable ZIP** | Extract anywhere — self-contained **`SuperTweaker.exe`** plus **`Data`** / **`Assets`**. |
-
-Grab the latest from **[Releases](https://github.com/NilyTnily/SuperTweaker/releases)**.
 
 ---
 
