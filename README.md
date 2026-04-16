@@ -30,12 +30,12 @@
     <tr>
       <td><code>.msi</code> installer</td>
       <td>Classic setup · installs under Program Files</td>
-      <td align="center"><a href="https://github.com/BendaZ/SuperTweaker/releases/latest/download/SuperTweaker-1.0.0-x64.msi"><strong>Download</strong></a></td>
+      <td align="center"><a href="https://github.com/NilyTnily/SuperTweaker/releases/latest/download/SuperTweaker-1.0.0-x64.msi"><strong>Download</strong></a></td>
     </tr>
     <tr>
       <td><code>.zip</code> portable EXE</td>
       <td>Extract anywhere · self-contained <code>SuperTweaker.exe</code> + <code>Data</code> / <code>Assets</code></td>
-      <td align="center"><a href="https://github.com/BendaZ/SuperTweaker/releases/latest/download/SuperTweaker-1.0.0-win-x64-portable.zip"><strong>Download</strong></a></td>
+      <td align="center"><a href="https://github.com/NilyTnily/SuperTweaker/releases/latest/download/SuperTweaker-1.0.0-win-x64-portable.zip"><strong>Download</strong></a></td>
     </tr>
   </tbody>
 </table>
