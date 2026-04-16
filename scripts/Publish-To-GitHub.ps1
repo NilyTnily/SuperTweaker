@@ -77,10 +77,10 @@ Write-Host "Pushing main and tag $Tag..."
 git push -u origin main
 if ($LASTEXITCODE -ne 0) {
     if (-not $env:GITHUB_TOKEN) {
-        Write-Error "git push failed. Create the repo on GitHub (empty `SuperTweaker` under your account), confirm `origin`, or set env GITHUB_TOKEN (classic PAT with `repo`) and re-run."
+        Write-Error 'git push failed. Create empty repo SuperTweaker on GitHub, confirm origin, or set GITHUB_TOKEN (classic PAT, repo scope) and re-run.'
     }
     Write-Host "Retrying: create repo if needed, then push with token..."
-    & $gh repo create $repoSlug --public --description "SuperTweaker — Windows optimization utility" 2>$null
+    & $gh repo create $repoSlug --public --description "SuperTweaker - Windows optimization utility" 2>$null
     $authed = "https://x-access-token:$($env:GITHUB_TOKEN)@github.com/${repoSlug}.git"
     git push -u $authed main
     if ($LASTEXITCODE -ne 0) { Write-Error "git push with token failed." }
